@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-form layuimini-form">
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>新增开多策略</legend>
+    </fieldset>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">策略名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" lay-reqtext="策略名称不能为空" placeholder="请输入策略名称" value="" class="layui-input" autocomplete="off">
+            <tip>填写策略名称，没有则自动生成。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">最低止盈率</label>
+        <div class="layui-input-block">
+            <input type="text" name="minGainRate" lay-verify="number" lay-reqtext="最低止盈率不能为空" placeholder="请输入最低止盈率" value="" class="layui-input" autocomplete="off">
+            <tip>低于此止盈率将不会被卖出。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">最高止盈率</label>
+        <div class="layui-input-block">
+            <input type="text" name="maxGainRate" lay-verify="number" lay-reqtext="最高止盈率不能为空" placeholder="请输入最止盈率" value="" class="layui-input" autocomplete="off">
+            <tip>高于此盈利率将立即被卖出。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">最高止损率</label>
+        <div class="layui-input-block">
+            <input type="text" name="maxLossRate" lay-verify="number" lay-reqtext="最高止损率不能为空" placeholder="请输入止损率" value="" class="layui-input" autocomplete="off">
+            <tip>高于此止损率将立即被卖出。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">最小差率</label>
+        <div class="layui-input-block">
+            <input type="text" name="minDiffRate" lay-verify="number" lay-reqtext="最小差率不能为空" placeholder="请输入最小差率" value="" class="layui-input" autocomplete="off">
+            <tip>低于此最小差率将不会被卖出。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">最长持有时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="expireSecond" lay-verify="number" lay-reqtext="最长持有时间不能为空" placeholder="请输入最长持有时间" value="" class="layui-input" autocomplete="off">
+            <tip>高于此持有时间将立即被卖出。</tip>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="../../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        let form = layui.form, layer = layui.layer, $ = layui.$;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            console.log(JSON.stringify(data.field))
+
+            let request = {
+                url: 'http://localhost:8080/admin/long_close_strategy/create',
+                type: "post",
+                data: JSON.stringify(data.field),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    console.log(data);
+                    // 1. 请求失败处理
+                    if (data.code !== 0) {
+                        layer.msg('新增数据失败，' + data.message, {icon: 5, offset: 't'});
+                        return;
+                    }
+                    // 2. 请求成功处理
+                    let index = layer.msg('新增数据成功', {icon: 1, offset: 't'}, function () {
+                        // 1. 关闭弹出层
+                        layer.close(index);
+                        // 2. 关闭当前页面，返回上一级
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    });
+                }
+            };
+            $.ajax(request);
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

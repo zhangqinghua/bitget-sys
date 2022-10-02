@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-form layuimini-form">
+
+    <form class="layui-form" disable lay-filter="update">
+        <input type="hidden" id="id" name="id">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入委托单标题">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="0" title="模拟单" checked="">
+                <input type="radio" name="type" value="1" title="真实单">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">最大持有数</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="maxHoldCount" lay-verify="required|number" autocomplete="off" class="layui-input" value="100" placeholder="请输入最大持有数">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">最大订单数</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="maxOrderCount" lay-verify="required|number" autocomplete="off" class="layui-input" value="144" placeholder="请输入最大订单数">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">每次开仓数</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="amount" lay-verify="required|number" autocomplete="off" class="layui-input" value="1" placeholder="请输入每次开仓数">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开多策略</label>
+                <div class="layui-input-inline">
+                    <select id="longOpenStrategy" name="longOpenStrategyId" lay-verify="required" lay-search="">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">平多策略</label>
+                <div class="layui-input-inline">
+                    <select id="longCloseStrategy" name="longCloseStrategyId" lay-verify="required" lay-search="">
+                        <option value="">请选择平多策略</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="startDate" id="startDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="finishDate" id="finishDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">用户会话</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="session"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'laydate', 'dropdown', 'http'], function () {
+        let form = layui.form, laydate = layui.laydate, layer = layui.layer, $ = layui.$, dropdown = layui.dropdown;
+        // 1. 初始化日期组件
+        initDate(layui);
+        // 2. 初始化下拉框
+        initSelect(layui);
+        // 3. 加载数据
+        initData(layui);
+
+        //初始化平多策略下拉框
+        form.on('submit(demo1)', function (data) {
+            console.log(JSON.stringify(data.field))
+            let request = {
+                url: layui.http.api + '/admin/order_book/update',
+                type: "post",
+                data: JSON.stringify(data.field),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    // 1. 请求失败处理
+                    if (data.code !== 0) {
+                        layer.msg('编辑数据失败，' + data.message, {icon: 5, offset: 't'});
+                        return;
+                    }
+                    // 2. 请求成功处理
+                    let index = layer.msg('编辑数据成功', {icon: 1, offset: 't'}, function () {
+                        // 1. 关闭弹出层
+                        layer.close(index);
+                        // 2. 关闭当前页面，返回上一级
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    });
+                }
+            };
+            $.ajax(request);
+            return false;
+        });
+    });
+
+    let initDate = function (layui) {
+        // 初始化日期
+        layui.laydate.render({elem: '#startDate'});
+        layui.laydate.render({elem: '#finishDate'});
+    }
+
+    let initSelect = function (layui) {
+        // 初始化开多策略下拉框
+        layui.$.ajax({url: layui.http.api + '/admin/long_open_strategy/list',
+                      type: "get",
+                      dataType: "json",
+                      contentType: "application/json",
+                      success: function (data) {
+                          // 使用循环遍历，给下拉列表赋值
+                          layui.$.each(data.data, function (index, value) {
+                              layui.$('#longOpenStrategy').append(new Option(value.name, value.id));
+                          });
+                          // 重新渲染 固定写法
+                          layui.form.render("select");
+                      }});
+
+        //初始化平多策略下拉框
+        layui.$.ajax({url: layui.http.api + '/admin/long_close_strategy/list',
+                      type: "get",
+                      dataType: "json",
+                      contentType: "application/json",
+                      success: function (data) {
+                          // 使用循环遍历，给下拉列表赋值
+                          layui.$.each(data.data, function (index, value) {
+                              layui.$('#longCloseStrategy').append(new Option(value.name, value.id));
+                          });
+                          // 重新渲染 固定写法
+                          layui.form.render("select");
+                      }});
+    }
+
+    let initData = function (layui) {
+        // 1. 获取数据id update.html?id=123
+        let id = location.href.split("=")[1];
+
+        // 2. 查询数据
+        layui.$.ajax({url: layui.http.api + '/admin/order_book/detail?orderBookId=' + id,
+                      type: "get",
+                      dataType: "json",
+                      contentType: "application/json",
+                      success: function (data) {
+                          console.log(data)
+                          if (data.code !== 0) {
+                              layer.msg(data.message, {icon: 5, offset: 't'});
+                              return;
+                          }
+                          layui.form.val('update', {'id': data.data.id,
+                                                    'name': data.data.name,
+                                                    'type': data.data.type,
+                                                    'maxHoldCount': data.data.maxHoldCount,
+                                                    'maxOrderCount': data.data.maxOrderCount,
+                                                    'amount': data.data.amount,
+                                                    'longOpenStrategyId': data.data.longOpenStrategyId,
+                                                    'longCloseStrategyId': data.data.longCloseStrategyId,
+                                                    'startDate': data.data.startDate,
+                                                    'finishDate': data.data.finishDate,
+                                                    'session': data.data.session})
+                      }});
+    }
+</script>
+</body>
+</html>
