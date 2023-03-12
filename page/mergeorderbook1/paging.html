@@ -106,12 +106,9 @@
                                     if (d.status === 1) {
                                         str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="enable">暂停</a>';
                                     }
-                                    if (d.status === 2) {
-                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="enable">重启</a>';
-                                    }
                                     str += '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail">查看</a>';
                                     // 3. 编辑
-                                    str += '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="update">编辑</a>';
+                                    // str += '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="update">编辑</a>';
                                     // 4. 删除
                                     str += '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>';
                                     return str;}}]],
@@ -168,7 +165,7 @@
         table.on('tool(currentTableFilter)', function (obj) {
             // 1. 启用/暂停
             if (obj.event === 'enable') {
-                layui.$.ajax({url: layui.http.api + '/admin/order_book/enable?orderBookId=' + obj.data.id,
+                layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/enable?mergeOrderBookId=' + obj.data.id,
                               type: "post",
                               dataType: "json",
                               contentType: "application/json",
