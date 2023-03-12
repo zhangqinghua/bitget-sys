@@ -210,6 +210,22 @@
                                       // table.reload("tid");
                                   }});
             }
+
+            // 4. 删除
+            if (obj.event === 'delete') {
+                layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/delete?mergeOrderBookId=' + obj.data.id,
+                              type: "delete",
+                              dataType: "json",
+                              contentType: "application/json",
+                              success: function (data) {
+                                  if (data.code !== 0) {
+                                      layer.msg(data.message, {icon: 5, offset: 't'});
+                                      return;
+                                  }
+                                  // 重新加载数据表格
+                                  table.reload("tid");
+                              }});
+            }
         });
 
     });
