@@ -55,6 +55,12 @@
                               {field: 'currency', title: '进场位置', templet: function(d){
                                   return d.config.firstPrice;
                               }},
+                              {field: 'currency', title: '开仓次数', templet: function(d){
+                                  return d.attach.openCount;
+                              }},
+                              {field: 'currency', title: '平仓次数', templet: function(d){
+                                  return d.attach.closeCount;
+                              }},
                               {field: 'originGain', title: '理论收益'},
                               {field: 'actualGain', title: '实际收益'},
                               {field: 'status', width: '10%', title: '状态', templet: function(d){
@@ -62,7 +68,7 @@
                                          d.status === 1 ? '进行中' :
                                          d.status === 2 ? '已结束' : '已终止';
                               }},
-                              {title: '操作', width: 250, align: "left", templet: function (d) {
+                              {title: '操作', width: 200, align: "left", templet: function (d) {
                                     // 1. 已暂停
                                       let str =''
                                     if (d.status === 0) {
