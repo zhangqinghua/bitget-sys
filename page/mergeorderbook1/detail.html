@@ -123,8 +123,7 @@
 
     <div class="layui-tab layui-tab-card" lay-filter="tab">
         <ul class="layui-tab-title">
-            <li class="layui-this">每日报表</li>
-            <li>订单明细</li>
+            <li class="layui-this">订单明细</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -167,50 +166,11 @@
                     </div>
                 </fieldset>
 
-                <table class="layui-hide" id="day_report" lay-filter="day_report"></table>
+                <table class="layui-hide" id="order_record" lay-filter="order_record"></table>
             </div>
 
             <div class="layui-tab-item">
-                <fieldset class="table-search-fieldset"  lay-filter="order_record_search">
-                    <legend>搜索信息</legend>
-                    <div style="margin: 10px 10px 10px 10px">
-                        <form class="layui-form layui-form-pane">
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">买入日期</label>
-                                    <div class="layui-input-inline">
-                                        <input type="date" name="buyDate" autocomplete="off" class="layui-input">
-                                    </div>
-
-                                    <label class="layui-form-label">订单状态</label>
-                                    <div class="layui-input-inline">
-                                        <select name="status" lay-search="">
-                                            <option value=""></option>
-                                            <option value="0">未平仓</option>
-                                            <option value="1">已平仓</option>
-                                        </select>
-                                    </div>
-
-                                    <label class="layui-form-label">盈亏状态</label>
-                                    <div class="layui-input-inline">
-                                        <select name="gainStatus" lay-search="">
-                                            <option value=""></option>
-                                            <option value="0">已亏损</option>
-                                            <option value="1">已盈利</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="layui-inline">
-                                    <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="order_record_search_btn"><i class="layui-icon"></i> 搜 索</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </fieldset>
-
-                <table class="layui-hide" id="order_record" lay-filter="order_record"></table>
+                <table class="layui-hide" id="order_record1" lay-filter="order_record1"></table>
             </div>
         </div>
     </div>
@@ -224,26 +184,23 @@
 
     layui.use(['form', 'laydate', 'dropdown', 'element', 'http'], function () {
         let form = layui.form, laydate = layui.laydate, layer = layui.layer, $ = layui.$, dropdown = layui.dropdown;
-        // 1. 初始化日期组件
-        // initDate(layui);
-        // 2. 初始化下拉框
-        // initSelect(layui);
-        // 3. 加载数据
-        initData(layui);
 
-        // 4. 加载日报
-        // loadDayReport(layui);
-
-        // 5. 选项卡事件
+        // 1. 初始化选项卡
         layui.element.on('tab(tab)', function(data){
             console.log(data);
             if (data.index === 0) {
-                loadDayReport(layui);
-            }
-            if (data.index === 1) {
                 loadOrderRecord(layui);
             }
+            if (data.index === 1) {
+
+            }
         });
+
+        // 2. 加载数据
+        initData(layui);
+
+        // 3. 加载订单明细
+        loadOrderRecord(layui);
     });
 
     let initData = function (layui) {
@@ -278,100 +235,36 @@
                           layui.form.val('update', result)
                       }});
     }
-    let loadDayReport = function (layui) {
-        layui.table.render({id: 'day_report',
-                            elem: '#day_report',
-                            url: layui.http.api + '/admin/day_report/paging',
-                            loading: true,
-                            toolbar: '#toolbarDemo',
-                            cols: [[{type: "checkbox", width: 50},
-                                   {field: 'date', title: '日期'},
-                                   {field: 'orderCount', title: '订单总数'},
-                                   {field: 'finishOrderCount', title: '已平仓订单数'},
-                                   {field: 'unfinishOrdreCount', title: '未平仓订单数'},
-                                   {field: 'gainOrderCount',  title: '盈利订单数'},
-                                   {field: 'ungainOrderCount',  title: '亏损订单数'},
-                                   {field: 'totalGain',  title: '当天盈亏', templet: function (d) {
-                                       return d.totalGain + "/" + d.totalActualGain;
-                                       }},
-                                   {field: 'avgGain',  title: '平均盈利金额', templet: function (d) {
-                                       return d.avgGain + "/" + d.avgActualGain;
-                                       }},
-                                   {field: 'avgGainRate',  title: '平均盈利率', templet: function (d) {
-                                       return d.avgGainRate + '%' + "/" + d.avgActualGainRate + '%';
-                                       }}]],
-                            page: true,
-                            where: {orderBookId: id},
-                            limit: 10,
-                            limits: [10, 15, 20]});
 
-        // 监听搜索操作
-        layui.form.on('submit(day_report_search_btn)', function (data) {
-            // 1. 获取数据id update.html?id=123
-            data.field.orderBookId = id;
-            //执行搜索重载
-            layui.table.reload('day_report', {page:  {curr: 1}, where: data.field}, 'data');
-            return false;
-        });
-    }
 
     let loadOrderRecord = function (layui) {
         layui.table.render({id: 'order_record',
                             elem: '#order_record',
-                            url: layui.http.api + '/admin/order_record/paging',
+                            url: layui.http.api + '/admin/merge_order_record/paging',
                             loading: true,
                             cols: [[{type: "checkbox", width: 50},
                                     {field: 'id', hide: true},
-                                    {field: 'actualBuyTime', title: '买入时间'},
-                                    {field: 'actualBuyPrice', title: '买入价格'},
-                                    {field: 'actualSaleTime', title: '卖出时间'},
-                                    {field: 'actualSalePrice', title: '卖出价格'},
-                                    {field: 'actualGain',  title: '盈亏'},
-                                    {field: 'status', title: '状态', templet: function(d){
-                                            return d.status === 0 ? '未平仓' : '已平仓';
-                                        }},
-                                    {title: '操作', width: 100, align: "center", templet: function (d) {
-                                            // 1. 已暂停
-                                            let str =''
-                                            if (d.status === 0) {
-                                                str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="longClose">平仓</a>';
-                                            }else {
-                                                str += '<a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="longClose">平仓</a>';
-                                            }
-                                            return str;}}]],
+                                    {field: 'actualTime', title: '操盘时间'},
+                                    {field: 'direction', title: '操盘方向', templet: function(d){
+                                            return d.direction === 'long_open' ? '开多' :
+                                                   d.direction === 'short_open' ? '开空' :
+                                                   d.direction === 'long_close' ? '平多' : '平空';
+                                    }},
+                                    {field: 'actualPrice', title: '操盘价格'},
+                                    {field: 'amount', title: '操盘数量', templet: function(d){
+                                            return d.config.amount;
+                                    }},
+                                    {field: 'amount', title: '备注', templet: function(d){
+                                            let msg = '';
+                                            if (d.config.remark1) msg += d.config.remark1;
+                                            if (d.config.remark2) msg += d.config.remark2;
+                                            return msg;
+                                    }},
+                                    ]],
                             page: true,
-                            where: {orderBookId: id},
+                            where: {mergeOrderBookId: id},
                             limit: 10,
                             limits: [10, 15, 20]});
-
-        // 监听搜索操作
-        layui.form.on('submit(order_record_search_btn)', function (data) {
-            // 1. 获取数据id update.html?id=123
-            data.field.orderBookId = id;
-            //执行搜索重载
-            layui.table.reload('order_record', {page:  {curr: 1}, where: data.field}, 'data');
-            return false;
-        });
-
-        // 监听平仓事件
-        layui.table.on('tool(order_record)', function (obj) {
-            console.log(obj)
-            if (obj.event === 'longClose') {
-                layui.$.ajax({url: layui.http.api + '/admin/order_record/long_close',
-                              type: "post",
-                              data: '{orderRecordIds: [' + obj.data.id + ']}',
-                              dataType: "json",
-                              contentType: "application/json",
-                              success: function (data) {
-                                  if (data.code !== 0) {
-                                      layer.msg(data.message, {icon: 5, offset: 't'});
-                                      return;
-                                  }
-                                  // 重新加载数据表格
-                                  layui.table.reload("order_record");
-                              }});
-            }
-        });
     }
 
 </script>
