@@ -13,7 +13,80 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">类型</label>
+                            <div class="layui-input-inline">
+                                <select id="type" name="type" lay-verify="" lay-search="">
+                                    <option value=""></option>
+                                    <option value="0">模拟单</option>
+                                    <option value="1">实盘单</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">平台</label>
+                            <div class="layui-input-inline">
+                                <select id="platform" name="platform" lay-verify="" lay-search="">
+                                    <option value=""></option>
+                                    <option value="BITGET">BITGET</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">币种</label>
+                            <div class="layui-input-inline">
+                                <select id="currency" name="currency" lay-verify="" lay-search="">
+                                    <option value=""></option>
+                                    <option value="BTC">BTC</option>
+                                    <option value="ETH">ETH</option>
+                                    <option value="UNI">BCH</option>
+                                    <option value="UNI">EOS</option>
+                                    <option value="UNI">ETC</option>
+                                    <option value="UNI">DOT</option>
+                                    <option value="UNI">XPR</option>
+                                    <option value="UNI">FIL</option>
+                                    <option value="UNI">ADA</option>
+                                    <option value="UNI">UNI</option>
+                                    <option value="UNI">TRX</option>
+                                    <option value="UNI">LINK</option>
+                                    <option value="UNI">DOGE</option>
+                                    <option value="UNI">SUSHI</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">方向</label>
+                            <div class="layui-input-inline">
+                                <select id="direction" name="direction" lay-verify="" lay-search="">
+                                    <option value=""></option>
+                                    <option value="long_open">开多</option>
+                                    <option value="short_open">开空</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-inline">
+                                <select id="status" name="status" lay-verify="" lay-search="">
+                                    <option value=""></option>
+                                    <option value="0">已暂停</option>
+                                    <option value="1">进行中</option>
+                                    <option value="2">已结束</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
@@ -92,7 +165,7 @@
             //执行搜索重载
             table.reload('tid',
                          {page:  {curr: 1},
-                          where: {searchParams: JSON.stringify(data.field)}},
+                          where: data.field},
                          'data');
             return false;
         });
