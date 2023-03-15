@@ -141,7 +141,7 @@
                                          d.status === 1 ? '进行中' :
                                          d.status === 2 ? '已结束' : '已终止';
                               }},
-                              {title: '操作', width: 200, align: "left", templet: function (d) {
+                              {title: '操作', width: 300, align: "left", templet: function (d) {
                                     // 1. 已暂停
                                       let str =''
                                     if (d.status === 0) {
@@ -149,6 +149,8 @@
                                     }
                                     if (d.status === 1) {
                                         str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="enable">暂停</a>';
+                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="open">立即开仓</a>';
+                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="close">立即平仓</a>';
                                     }
                                     str += '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail">查看</a>';
                                     // 3. 编辑
@@ -222,7 +224,36 @@
                                   table.reload("tid");
                               }});
             }
-
+            // 1. 立即开仓
+            if (obj.event === 'open') {
+                layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/open?mergeOrderBookId=' + obj.data.id,
+                                 type: "post",
+                                 dataType: "json",
+                                 contentType: "application/json",
+                                 success: function (data) {
+                                     if (data.code !== 0) {
+                                         layer.msg(data.message, {icon: 5, offset: 't'});
+                                         return;
+                                     }
+                                     // 重新加载数据表格
+                                     table.reload("tid");
+                                 }});
+            }
+            // 1. 立即平仓
+            if (obj.event === 'close') {
+                layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/close?mergeOrderBookId=' + obj.data.id,
+                                 type: "post",
+                                 dataType: "json",
+                                 contentType: "application/json",
+                                 success: function (data) {
+                                     if (data.code !== 0) {
+                                         layer.msg(data.message, {icon: 5, offset: 't'});
+                                         return;
+                                     }
+                                     // 重新加载数据表格
+                                     table.reload("tid");
+                                 }});
+            }
             // 2. 查询
             if (obj.event === 'detail') {
                 layui.layer.open({type: 2,
