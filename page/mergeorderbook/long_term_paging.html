@@ -117,7 +117,7 @@
                       toolbar: '#toolbarDemo',
                       cols: [[{type: "checkbox", width: 50},
                               {field: 'id', hide: true},
-                              {field: 'gmtCreated', title: '创建日期', width: 170},
+                              {field: 'gmtCreated', title: '创建日期', width: 180},
                               {field: 'type', title: '类型', width: 100, templet: function(d){
                                   return d.type === 0 ? '模拟单' : '实盘单';
                               }},
@@ -147,11 +147,12 @@
                                       let str =''
                                     if (d.status === 0) {
                                         str += '<a class="layui-btn layui-btn-xs" lay-event="enable">启用</a>';
+                                        str += '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="update">编辑</a>';
                                     }
                                     if (d.status === 1) {
                                         str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="enable">暂停</a>';
-                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="open">立即开仓</a>';
-                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="close">立即平仓</a>';
+                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="open">开仓</a>';
+                                        str += '<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="close">平仓</a>';
                                     }
                                     str += '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail">查看</a>';
                                     // 3. 编辑
@@ -166,6 +167,7 @@
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
             //执行搜索重载
+            data.field.termType = 1;
             table.reload('tid',
                          {page:  {curr: 1},
                           where: data.field},
@@ -225,7 +227,7 @@
                                   table.reload("tid");
                               }});
             }
-            // 1. 立即开仓
+            // 1. 开仓
             if (obj.event === 'open') {
                 layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/open?mergeOrderBookId=' + obj.data.id,
                                  type: "post",
@@ -240,7 +242,7 @@
                                      table.reload("tid");
                                  }});
             }
-            // 1. 立即平仓
+            // 1. 平仓
             if (obj.event === 'close') {
                 layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/close?mergeOrderBookId=' + obj.data.id,
                                  type: "post",

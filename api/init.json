@@ -1,7 +1,7 @@
 {
   "homeInfo": {
     "title": "首页",
-    "href": "page/mergeorderbook/paging.html"
+    "href": "page/member/paging.html"
   },
   "logoInfo": {
     "title": "后台系统",
@@ -16,13 +16,32 @@
       "target": "_self",
       "child": [
         {
-          "title": "订单管理",
+          "title": "用户管理",
           "icon": "fa fa-gears",
           "target": "_self",
           "child": [
             {
-              "title": "补仓单管理",
-              "href": "page/mergeorderbook/paging.html",
+              "title": "用户管理",
+              "href": "page/member/paging.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "策略管理",
+          "icon": "fa fa-gears",
+          "target": "_self",
+          "child": [
+            {
+              "title": "短线策略",
+              "href": "page/mergeorderbook/short_term_paging.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "长线策略",
+              "href": "page/mergeorderbook/long_term_paging.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             }

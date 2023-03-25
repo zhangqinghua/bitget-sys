@@ -68,3 +68,8 @@ body {
     -moz-border-radius: 2em;
     border-radius: 2em
 }
+
+/*将输入框的长度设置300px，避免太短*/
+.layui-form-item .layui-input-inline {
+    width: 300px !important;
+}
