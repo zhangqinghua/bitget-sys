@@ -84,24 +84,24 @@
                               let item = data.data.config.fieldItems[i];
 
                               let html = '';
-                              if (item.type === 0) {
+                              // if (item.type === 0) {
                                   html = "<div class='layui-form-item'>" +
                                          "   <label class='layui-form-label'>" + item.name +"</label>" +
                                          "   <div class='layui-input-inline'>" +
-                                         "       <input type='text' name='" + item.key + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' autocomplete='off' class='layui-input' placeholder='请输入" + item.name+ "'>" +
+                                         "       <input type='password' name='" + item.key + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' autocomplete='off' class='layui-input' placeholder='请输入" + item.name+ "'>" +
                                          "   </div>" +
                                          "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
                                          "</div>";
-                              }
-                              if (item.type === 1) {
-                                  html = "<div class='layui-form-item'>" +
-                                         "   <label class='layui-form-label'>" + item.name +"</label>" +
-                                         "   <div class='layui-input-inline'>" +
-                                         "       <textarea placeholder='请输入" + item.name + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' class='layui-textarea' name='" +item.key + "'></textarea>" +
-                                         "   </div>" +
-                                         "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
-                                         "</div>";
-                              }
+                              // }
+                              // if (item.type === 1) {
+                              //     html = "<div class='layui-form-item'>" +
+                              //            "   <label class='layui-form-label'>" + item.name +"</label>" +
+                              //            "   <div class='layui-input-inline'>" +
+                              //            "       <textarea placeholder='请输入" + item.name + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' class='layui-textarea' name='" +item.key + "'></textarea>" +
+                              //            "   </div>" +
+                              //            "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
+                              //            "</div>";
+                              // }
 
                               let newFromItem = layui.$(html);
                               lastFormItem.before(newFromItem);
