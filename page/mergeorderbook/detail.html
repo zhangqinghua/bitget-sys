@@ -73,6 +73,12 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">适用账户</label>
+            <div class="layui-input-block" id="memberId">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">进场位置</label>
                 <div class="layui-input-inline">
@@ -135,49 +141,10 @@
 
     <div class="layui-tab layui-tab-card" lay-filter="tab">
         <ul class="layui-tab-title">
-            <li class="layui-this">订单明细</li>
+            <li class="layui-this">操作明细</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <fieldset class="table-search-fieldset"  lay-filter="day_report_search">
-                    <legend>搜索信息</legend>
-                    <div style="margin: 10px 10px 10px 10px">
-                        <form class="layui-form layui-form-pane">
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">买入日期</label>
-                                    <div class="layui-input-inline">
-                                        <input type="date" name="buyDate" autocomplete="off" class="layui-input">
-                                    </div>
-
-                                    <label class="layui-form-label">订单状态</label>
-                                    <div class="layui-input-inline">
-                                        <select name="status" lay-search="">
-                                            <option value=""></option>
-                                            <option value="0">未平仓</option>
-                                            <option value="1">已平仓</option>
-                                        </select>
-                                    </div>
-
-                                    <label class="layui-form-label">盈亏状态</label>
-                                    <div class="layui-input-inline">
-                                        <select name="gainStatus" lay-search="">
-                                            <option value=""></option>
-                                            <option value="0">已亏损</option>
-                                            <option value="1">已盈利</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="layui-inline">
-                                    <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="day_report_search_btn"><i class="layui-icon"></i> 搜 索</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </fieldset>
-
                 <table class="layui-hide" id="order_record" lay-filter="order_record"></table>
             </div>
 
@@ -229,10 +196,13 @@
                           }
                           let result = data.data;
 
+                          // 适用账号
+
+
                           // 补仓显示
                           if (result.config && result.config.openStrategy && result.config.openStrategy.secondPrice) {
                               document.querySelector('input[name="isMerge"]').checked = true;
-                              document.getElementById("mergeForm").style = 'display: ""'
+                              document.getElementById("mergeForm").style.display = "";
                           }
 
                           result.firstNum = result.config.openStrategy.firstNum;
@@ -262,7 +232,8 @@
                                                    d.direction === 'short_open' ? '开空' :
                                                    d.direction === 'long_close' ? '平多' : '平空';
                                     }},
-                                    {field: 'actualPrice', title: '操盘价格'},
+                                    {field: 'originPrice', title: '币安价格'},
+                                    {field: 'actualPrice', title: '平台价格'},
                                     {field: 'amount', title: '操盘数量', templet: function(d){
                                             return d.config.amount;
                                     }},

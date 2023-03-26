@@ -71,6 +71,12 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">适用账户</label>
+            <div class="layui-input-block" id="memberId">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">进场位置</label>
                 <div class="layui-input-inline">
@@ -104,7 +110,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">是否补仓</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="isMerge" lay-skin="switch" lay-filter="isMerge" lay-text="ON|OFF">
+                <input type="checkbox" name="isMerge" lay-skin="switch" lay-filter="isMerge" lay-text="ON|OFF" disabled>
             </div>
         </div>
 
@@ -142,7 +148,18 @@
 <script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 
 <script>
+    // 1. 获取数据id update.html?id=123
+    let termType = location.href.split("=")[1];
+    if (termType === '0') {
+        document.querySelector('input[name="isMerge"]').checked = false;
+        document.getElementById("mergeForm").style.display = "none";
+    }else {
+        document.querySelector('input[name="isMerge"]').checked = true;
+        document.getElementById("mergeForm").style.display = "";
+    }
+
     layui.use(['form', 'laydate', 'dropdown', 'http'], function () {
+
         let form = layui.form, laydate = layui.laydate, layer = layui.layer, $ = layui.$, dropdown = layui.dropdown;
 
         // 监听是否补仓选项
@@ -150,11 +167,29 @@
             document.getElementById("mergeForm").style.display = this.checked ? '' : 'none';
         });
 
+        // 初始化账号列表
+        initMembers(layui, $);
+
         // 监听提交事项
         form.on('submit(demo1)', function (data) {
             let param = data.field;
 
-            console.log(param)
+            // 解析适用账户
+            let memberIds = [];
+            // 遍历对象的属性
+            for (let key in param) {
+                // 如果属性名包含"memberId["，则使用正则表达式提取方括号中的值
+                if (key.indexOf("memberId[") !== -1) {
+                    let match = key.match(/memberId\[(.*?)\]/);
+                    let value = match[1];
+                    // 如果值为"on"，则将其添加到数组中
+                    if (param[key] === "on") {
+                        memberIds.push(value);
+                    }
+                }
+            }
+            param.memberIds = memberIds;
+
 
             param.config = {};
             param.config.openStrategy = {};
@@ -201,6 +236,38 @@
         });
     });
 
+    let initMembers = function (layui, $) {
+        let params = {
+            page: 1,
+            limit: 100,
+            platform: document.getElementById("platform").value
+        };
+        // 初始化开多策略下拉框
+        $.ajax({url: layui.http.api + '/admin/member/paging',
+                type: "get",
+                data: params,
+                success: function (data) {
+                    // 使用循环遍历，给下拉列表赋值
+                    $.each(data.data, function (index, value) {
+
+                        console.log(value)
+
+                        // 获取要追加内容的父元素
+                        let parentElement = document.getElementById('memberId');
+
+                        // 创建要追加的元素
+                        let newCheckbox = document.createElement('input');
+                        newCheckbox.type = 'checkbox';
+                        newCheckbox.name = 'memberId[' + value.id + ']';
+                        newCheckbox.title = value.name;
+                        parentElement.appendChild(newCheckbox);
+
+                        layui.form.render("checkbox");
+                    });
+                    // 重新渲染 固定写法
+                    layui.form.render("checkbox");
+                }});
+    }
 </script>
 </body>
 </html>

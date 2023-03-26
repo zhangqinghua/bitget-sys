@@ -126,6 +126,9 @@
                               {field: 'type', title: '方向', width: 100, templet: function(d){
                                   return d.direction === 'long_open' ? '开多' : '开空';
                               }},
+                              {field: 'member', title: '所属账户', width: 200, templet: function(d){
+                                  return d.attach.member.name;
+                              }},
                               {field: 'currency', title: '进场位置', templet: function(d){
                                   return d.config.firstPrice;
                               }},
@@ -178,13 +181,13 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             // 1. 添加委托单
             if (obj.event === 'add') {
-                layer.open({title: '添加委托单',
+                layer.open({title: '新增策略',
                             type: 2,
                             shade: 0.1,
                             maxmin: false,
                             shadeClose: true,
                             area: ['100%', '100%'],
-                            content: 'create.html',
+                            content: 'create.html?termType=1',
                             end: function () {
                             }});
 
@@ -258,7 +261,7 @@
                 layui.layer.open({type: 2,
                                   anim: 5,
                                   shade: 0.3,
-                                  title: '委托单详情',
+                                  title: '策略详情',
                                   maxmin: false,
                                   shadeClose: true,
                                   area: ['100%', '100%'],
@@ -270,7 +273,7 @@
                 layui.layer.open({type: 2,
                                   anim: 5,
                                   shade: 0.3,
-                                  title: '编辑委托单',
+                                  title: '编辑策略',
                                   maxmin: false,
                                   shadeClose: true,
                                   area: ['100%', '100%'],
