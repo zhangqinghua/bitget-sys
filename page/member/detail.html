@@ -42,6 +42,7 @@
         </div>
     </form>
 </div>
+</div>
 
 <script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
@@ -73,13 +74,25 @@
                           for (let i = 0; i < data.data.config.fieldItems.length; i++) {
                               let lastFormItem = layui.$('.layui-form-item:last');
                               let item = data.data.config.fieldItems[i];
-                              let html = "<div class='layui-form-item'>" +
+                              let html = '';
+                              if (item.type === 0) {
+                                  html = "<div class='layui-form-item'>" +
                                          "   <label class='layui-form-label'>" + item.name +"</label>" +
                                          "   <div class='layui-input-inline'>" +
                                          "       <input type='text' name='" + item.key + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' autocomplete='off' class='layui-input' placeholder='请输入" + item.name+ "' disabled>" +
                                          "   </div>" +
                                          "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
                                          "</div>";
+                              }
+                              if (item.type === 1) {
+                                  html = "<div class='layui-form-item'>" +
+                                         "   <label class='layui-form-label'>" + item.name +"</label>" +
+                                         "   <div class='layui-input-inline'>" +
+                                         "       <textarea placeholder='请输入" + item.name + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' class='layui-textarea' name='" +item.key + "' disabled></textarea>" +
+                                         "   </div>" +
+                                         "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
+                                         "</div>";
+                              }
                               let newFromItem = layui.$(html);
                               lastFormItem.after(newFromItem);
 
@@ -122,6 +135,5 @@
     }
 
 </script>
-
 </body>
 </html>

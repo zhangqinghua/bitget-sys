@@ -191,6 +191,8 @@
                         layer.close(index);
                         // 2. 关闭当前页面，返回上一级
                         parent.layer.close(parent.layer.getFrameIndex(window.name));
+                        // 3. 重新加载表格数据
+                        parent.location.reload()
                     });
                 }
             };

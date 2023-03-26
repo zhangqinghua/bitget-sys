@@ -121,17 +121,13 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             // 1. 添加委托单
             if (obj.event === 'add') {
-                layer.open({title: '添加委托单',
+                layer.open({title: '新增账户',
                             type: 2,
-                            shade: 0.1,
+                            shade: 0.3,
                             maxmin: false,
                             shadeClose: true,
                             area: ['100%', '100%'],
-                            content: 'create.html',
-                            end: function () {
-                                // 尝试由上层加载
-                                // table.reload("tid");
-                            }});
+                            content: 'create.html'});
 
             }
             // 2. 批量删除
@@ -153,20 +149,57 @@
          * 监听工具条事件
          */
         table.on('tool(currentTableFilter)', function (obj) {
+            // 2. 详情
+            if (obj.event === 'detail') {
+                layui.layer.open({type: 2,
+                                  anim: 5,
+                                  shade: 0.3,
+                                  title: '账号账户',
+                                  maxmin: false,
+                                  shadeClose: true,
+                                  area: ['100%', '100%'],
+                                  content: 'detail.html?id=' + obj.data.id});
+            }
+
+            // 3. 编辑
+            if (obj.event === 'update') {
+                layui.layer.open({type: 2,
+                                  anim: 5,
+                                  shade: 0.3,
+                                  title: '编辑账户',
+                                  maxmin: false,
+                                  shadeClose: true,
+                                  area: ['100%', '100%'],
+                                  content: 'update.html?id=' + obj.data.id,
+                                  // 层弹出后的成功回调方法
+                                  success: function () {
+                                    console.log("success 层弹出后的成功回调方法")
+                                  },
+                                  // 右上角关闭按钮触发的回调
+                                  cancel: function () {
+                                      console.log("cancel 右上角关闭按钮触发的回调")
+                                  },
+                                  // 右上角关闭按钮触发的回调
+                                  end: function () {
+                                     console.log("end 右上角关闭按钮触发的回调")
+                                  }
+                                  });
+            }
+
             // 1. 启用/暂停
             if (obj.event === 'enable') {
                 layui.$.ajax({url: layui.http.api + '/admin/merge_order_book/enable?mergeOrderBookId=' + obj.data.id,
-                              type: "post",
-                              dataType: "json",
-                              contentType: "application/json",
-                              success: function (data) {
-                                  if (data.code !== 0) {
-                                      layer.msg(data.message, {icon: 5, offset: 't'});
-                                      return;
-                                  }
-                                  // 重新加载数据表格
-                                  table.reload("tid");
-                              }});
+                                 type: "post",
+                                 dataType: "json",
+                                 contentType: "application/json",
+                                 success: function (data) {
+                                     if (data.code !== 0) {
+                                         layer.msg(data.message, {icon: 5, offset: 't'});
+                                         return;
+                                     }
+                                     // 重新加载数据表格
+                                     table.reload("tid");
+                                 }});
             }
             // 1. 开仓
             if (obj.event === 'open') {
@@ -198,35 +231,6 @@
                                      table.reload("tid");
                                  }});
             }
-            // 2. 查询
-            if (obj.event === 'detail') {
-                layui.layer.open({type: 2,
-                                  anim: 5,
-                                  shade: 0.3,
-                                  title: '委托单详情',
-                                  shade: 0.1,
-                                  maxmin: false,
-                                  shadeClose: true,
-                                  area: ['100%', '100%'],
-                                  content: 'detail.html?id=' + obj.data.id});
-            }
-
-            // 3. 编辑
-            if (obj.event === 'update') {
-                layui.layer.open({type: 2,
-                                  anim: 5,
-                                  shade: 0.3,
-                                  title: '编辑委托单',
-                                  maxmin: false,
-                                  shadeClose: true,
-                                  area: ['100%', '100%'],
-                                  content: 'update.html?id=' + obj.data.id,
-                                  success: function () {
-                                      // 重新加载数据表格
-                                      // table.reload("tid");
-                                  }});
-            }
-
             // 4. 删除
             if (obj.event === 'delete') {
                 layui.$.ajax({url: layui.http.api + '/admin/member/delete?memberId=' + obj.data.id,

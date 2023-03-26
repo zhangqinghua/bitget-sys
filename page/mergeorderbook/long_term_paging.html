@@ -129,14 +129,10 @@
                               {field: 'currency', title: '进场位置', templet: function(d){
                                   return d.config.firstPrice;
                               }},
-                              {field: 'currency', title: '开仓次数', templet: function(d){
-                                  return d.attach.openCount;
+                              {field: 'currency', title: '操作次数', templet: function(d){
+                                  return d.attach.openCount + d.attach.closeCount;
                               }},
-                              {field: 'currency', title: '平仓次数', templet: function(d){
-                                  return d.attach.closeCount;
-                              }},
-                              {field: 'originGain', title: '理论收益'},
-                              {field: 'actualGain', title: '实际收益'},
+                              {field: 'accountGain', title: '账面收益'},
                               {field: 'status', width: '10%', title: '状态', templet: function(d){
                                   return d.status === 0 ? '已暂停' :
                                          d.status === 1 ? '进行中' :
@@ -162,6 +158,7 @@
                                     return str;}}]],
                       page: true,
                       limit: 10,
+                      where: {termType : 1},
                       limits: [10, 15, 20]});
 
         // 监听搜索操作
@@ -189,7 +186,6 @@
                             area: ['100%', '100%'],
                             content: 'create.html',
                             end: function () {
-                                table.reload("tid");
                             }});
 
             }
@@ -263,7 +259,6 @@
                                   anim: 5,
                                   shade: 0.3,
                                   title: '委托单详情',
-                                  shade: 0.1,
                                   maxmin: false,
                                   shadeClose: true,
                                   area: ['100%', '100%'],
@@ -281,8 +276,6 @@
                                   area: ['100%', '100%'],
                                   content: 'update.html?id=' + obj.data.id,
                                   success: function () {
-                                      // 重新加载数据表格
-                                      // table.reload("tid");
                                   }});
             }
 
@@ -297,7 +290,6 @@
                                       layer.msg(data.message, {icon: 5, offset: 't'});
                                       return;
                                   }
-                                  // 重新加载数据表格
                                   table.reload("tid");
                               }});
             }

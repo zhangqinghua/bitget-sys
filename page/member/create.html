@@ -68,13 +68,25 @@
                     let lastFormItem = $('.layui-form-item:last');
                     for (let i = 0; i < data.data.length; i++) {
                         let item = data.data[i];
-                        let html = "<div class='layui-form-item'>" +
-                                    "   <label class='layui-form-label'>" + item.name +"</label>" +
-                                    "   <div class='layui-input-inline'>" +
-                                    "       <input type='text' name='" + item.key + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' autocomplete='off' class='layui-input' placeholder='请输入" + item.name+ "'>" +
-                                    "   </div>" +
-                                    "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
-                                    "</div>";
+                        let html = '';
+                        if (item.type === 0) {
+                            html = "<div class='layui-form-item'>" +
+                                       "   <label class='layui-form-label'>" + item.name +"</label>" +
+                                       "   <div class='layui-input-inline'>" +
+                                       "       <input type='text' name='" + item.key + "' lay-verify='" + (item.required === 0 ? "" : "required") + "' autocomplete='off' class='layui-input' placeholder='请输入" + item.name+ "'>" +
+                                       "   </div>" +
+                                       "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
+                                       "</div>";
+                        }
+                        if (item.type === 1) {
+                            html = "<div class='layui-form-item'>" +
+                                       "   <label class='layui-form-label'>" + item.name +"</label>" +
+                                       "   <div class='layui-input-inline'>" +
+                                       "       <textarea placeholder='请输入" + item.name + "' class='layui-textarea' lay-verify='" + (item.required === 0 ? "" : "required") + "' name='" +item.key + "'></textarea>" +
+                                       "   </div>" +
+                                       "   <div class='layui-form-mid layui-word-aux'> " + item.desc + "</div>" +
+                                       "</div>";
+                        }
                         let newFromItem = $(html);
                         lastFormItem.before(newFromItem);
                     }
@@ -117,8 +129,8 @@
                         layer.close(index);
                         // 2. 关闭当前页面，返回上一级
                         parent.layer.close(parent.layer.getFrameIndex(window.name));
-                        // 3. 重新加载
-                        // table.reload("tid");
+                        // 3. 重新加载表格数据
+                        parent.location.reload()
                     });
                 },
                 error: function (data) {
