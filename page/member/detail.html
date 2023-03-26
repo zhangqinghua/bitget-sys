@@ -34,9 +34,9 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">名称</label>
+            <label class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入名称" disabled>
+                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入用户名" disabled>
             </div>
             <div class="layui-form-mid layui-word-aux"></div>
         </div>
@@ -70,8 +70,8 @@
                           }
                           let result = data.data;
 
-                          let lastFormItem = layui.$('.layui-form-item:last');
                           for (let i = 0; i < data.data.config.fieldItems.length; i++) {
+                              let lastFormItem = layui.$('.layui-form-item:last');
                               let item = data.data.config.fieldItems[i];
                               let html = "<div class='layui-form-item'>" +
                                          "   <label class='layui-form-label'>" + item.name +"</label>" +

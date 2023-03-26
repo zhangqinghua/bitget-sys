@@ -75,18 +75,21 @@
                               {field: 'id', hide: true},
                               {field: 'gmtCreated', title: '创建日期', width: 180},
                               {field: 'platform', title: '平台', width: 100},
-                              {field: 'name', title: '名称', width: 200},
-                              {field: 'orderCount', title: '策略数量', templet: function(d){
+                              {field: 'name', title: '用户名', width: 200},
+                              {field: 'orderCount', title: '策略数量', width: 100, templet: function(d){
                                   return d.attach.orderCount;
                               }},
-                              {field: 'originGain', title: '行情收益', templet: function(d){
+                              {field: 'originGain', title: '币安收益', templet: function(d){
                                   return d.attach.originGain;
                               }},
-                              {field: 'actualGain', title: '实际收益', templet: function(d){
+                              {field: 'actualGain', title: '平台收益', templet: function(d){
                                   return d.attach.actualGain;
                               }},
                               {field: 'actualCharge', title: '平台手续费', templet: function(d){
                                   return d.attach.actualCharge;
+                              }},
+                              {field: 'accountGain', title: '账面收益', templet: function(d){
+                                  return d.attach.accountGain;
                               }},
                               {title: '操作', width: 300, align: "left", templet: function (d) {
                                     // 1. 已暂停
