@@ -135,6 +135,9 @@
                               {field: 'currency', title: '操作次数', templet: function(d){
                                   return d.attach.openCount + d.attach.closeCount;
                               }},
+                              {field: 'originGain', title: '币安收益'},
+                              {field: 'actualGain', title: '平台收益'},
+                              {field: 'actualCharge', title: '平台手续费'},
                               {field: 'accountGain', title: '账面收益'},
                               {field: 'status', width: '10%', title: '状态', templet: function(d){
                                   return d.status === 0 ? '已暂停' :
