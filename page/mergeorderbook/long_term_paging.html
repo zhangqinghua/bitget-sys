@@ -118,12 +118,12 @@
                       cols: [[{type: "checkbox", width: 50},
                               {field: 'id', hide: true},
                               {field: 'gmtCreated', title: '创建日期', width: 180},
-                              {field: 'type', title: '类型', width: 100, templet: function(d){
+                              {field: 'type', title: '类型', width: 80, templet: function(d){
                                   return d.type === 0 ? '模拟单' : '实盘单';
                               }},
-                              {field: 'platform', title: '平台', width: 100},
-                              {field: 'currency', title: '币种', width: 100},
-                              {field: 'type', title: '方向', width: 100, templet: function(d){
+                              {field: 'platform', title: '平台', width: 80},
+                              {field: 'currency', title: '币种', width: 80},
+                              {field: 'type', title: '方向', width: 80, templet: function(d){
                                   return d.direction === 'long_open' ? '开多' : '开空';
                               }},
                               {field: 'member', title: '所属账户', width: 200, templet: function(d){
@@ -139,7 +139,7 @@
                               {field: 'actualGain', title: '平台收益'},
                               {field: 'actualCharge', title: '平台手续费'},
                               {field: 'accountGain', title: '账面收益'},
-                              {field: 'status', title: '状态', templet: function(d){
+                              {field: 'status', title: '状态', width: 80, templet: function(d){
                                   return d.status === 0 ? '已暂停' :
                                          d.status === 1 ? '进行中' :
                                          d.status === 2 ? '已结束' : '已终止';
