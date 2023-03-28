@@ -164,12 +164,12 @@
                                     return str;}}]],
                       page: true,
                       limit: 10,
-                      where: {termType : 0},
+                      where: {term : 0},
                       limits: [10, 15, 20]});
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            data.field.termType = 0;
+            data.field.term = 0;
             //执行搜索重载
             table.reload('tid',
                          {page:  {curr: 1},
@@ -190,7 +190,7 @@
                             maxmin: false,
                             shadeClose: true,
                             area: ['100%', '100%'],
-                            content: 'create.html?termType=0',
+                            content: 'create.html?term=0',
                             end: function () {
                             }});
 

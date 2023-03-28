@@ -110,7 +110,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">是否补仓</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="isMerge" lay-skin="switch" lay-filter="isMerge" lay-text="ON|OFF" disabled>
+                <input type="checkbox" name="isMerge" lay-skin="switch" lay-filter="isMerge" lay-text="ON|OFF">
             </div>
         </div>
 
@@ -149,14 +149,14 @@
 
 <script>
     // 1. 获取数据id update.html?id=123
-    let termType = location.href.split("=")[1];
-    if (termType === '0') {
-        document.querySelector('input[name="isMerge"]').checked = false;
-        document.getElementById("mergeForm").style.display = "none";
-    }else {
-        document.querySelector('input[name="isMerge"]').checked = true;
-        document.getElementById("mergeForm").style.display = "";
-    }
+    let term = location.href.split("=")[1];
+    // if (termType === '0') {
+    //     document.querySelector('input[name="isMerge"]').checked = false;
+    //     document.getElementById("mergeForm").style.display = "none";
+    // }else {
+    //     document.querySelector('input[name="isMerge"]').checked = true;
+    //     document.getElementById("mergeForm").style.display = "";
+    // }
 
     layui.use(['form', 'laydate', 'dropdown', 'http'], function () {
 
@@ -188,6 +188,7 @@
                     }
                 }
             }
+            param.term = term;
             param.memberIds = memberIds;
 
 
