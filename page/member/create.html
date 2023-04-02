@@ -57,7 +57,7 @@
         let form = layui.form, laydate = layui.laydate, layer = layui.layer, $ = layui.$, dropdown = layui.dropdown;
 
         // 加载平台数据
-        reloadMemberItems(layui, $, c);
+        reloadMemberItems(layui, $, document.getElementById("platform").value);
         // 监听平台数据变动
         form.on('select(platform)', function(data){
             reloadMemberItems(layui, $, data.value);
