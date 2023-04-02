@@ -29,15 +29,15 @@
         </div>
 
         <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">平台</label>
-                <div class="layui-input-inline">
-                    <select id="platform" name="platform" lay-verify="required" lay-search="" lay-filter="platform">
-                        <option value="BITGET">BITGET</option>
-                        <option value="HOTCOIN">HOTCOIN</option>
-                    </select>
-                </div>
-            </div>
+<!--            <div class="layui-inline">-->
+<!--                <label class="layui-form-label">平台</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <select id="platform" name="platform" lay-verify="required" lay-search="" lay-filter="platform">-->
+<!--                        <option value="BITGET">BITGET</option>-->
+<!--                        <option value="HOTCOIN">HOTCOIN</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="layui-inline">
                 <label class="layui-form-label">币种</label>
                 <div class="layui-input-inline">
@@ -267,7 +267,8 @@
         let params = {
             page: 1,
             limit: 100,
-            nameAsc: true
+            nameAsc: true,
+            platformAsc: true
             // platform: document.getElementById("platform").value
         };
         // 初始化开多策略下拉框
@@ -277,9 +278,6 @@
                 success: function (data) {
                     // 使用循环遍历，给下拉列表赋值
                     $.each(data.data, function (index, value) {
-
-                        console.log(value)
-
                         // 获取要追加内容的父元素
                         let parentElement = document.getElementById('memberId');
 
@@ -288,6 +286,9 @@
                         newCheckbox.type = 'checkbox';
                         newCheckbox.name = 'memberId[' + value.id + ']';
                         newCheckbox.title = '(' + value.platform + ')' + value.name;
+                        if (value.name.includes(term === '0' ? "短线" : "长线") || value.name.includes("综合")) {
+                            newCheckbox.checked = true;
+                        }
                         parentElement.appendChild(newCheckbox);
 
                         layui.form.render("checkbox");
