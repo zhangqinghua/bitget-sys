@@ -127,7 +127,7 @@
                                   return d.direction === 'long_open' ? '开多' : '开空';
                               }},
                               {field: 'member', title: '所属账户', width: 200, templet: function(d){
-                                  return d.attach.member.name;
+                                  return d.attach.member ? d.attach.member.name : '[已删除]';
                               }},
                               {field: 'currency', title: '进场位置', templet: function(d){
                                   return d.config.firstPrice;
