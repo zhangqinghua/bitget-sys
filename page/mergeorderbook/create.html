@@ -29,14 +29,15 @@
         </div>
 
         <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">平台</label>
-                <div class="layui-input-inline">
-                    <select id="platform" name="platform" lay-verify="required" lay-search="">
-                        <option value="BITGET">BITGET</option>
-                    </select>
-                </div>
-            </div>
+<!--            <div class="layui-inline">-->
+<!--                <label class="layui-form-label">平台</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <select id="platform" name="platform" lay-verify="required" lay-search="" lay-filter="platform">-->
+<!--                        <option value="BITGET">BITGET</option>-->
+<!--                        <option value="HOTCOIN">HOTCOIN</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="layui-inline">
                 <label class="layui-form-label">币种</label>
                 <div class="layui-input-inline">
@@ -80,7 +81,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">进场位置</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="firstPrice" lay-verify="required|number" autocomplete="off" class="layui-input" value="" placeholder="20100.00">
+                    <input type="number" id="firstPrice" name="firstPrice" lay-verify="required|number" autocomplete="off" class="layui-input" value="" placeholder="20100.00">
                 </div>
             </div>
             <div class="layui-inline">
@@ -167,8 +168,33 @@
             document.getElementById("mergeForm").style.display = this.checked ? '' : 'none';
         });
 
+        console.log('监听进场位置输入框的输入事件');
+        // 监听进场位置输入框的输入事件
+
+        $("#firstPrice").on("input",function(e){
+            //获取input输入的值
+            console.log(e.delegateTarget.value);
+
+            console.log('监听进场位置输入框的输入事件');
+            // 获取当前输入框的值
+            let input = e.delegateTarget.value;
+
+            // 计算购买数量
+            let buyocunt = divideByNumber(input);
+            console.log('input: ' + input);
+            console.log('buyocunt: ' + buyocunt);
+            $('input[name="firstNum"]').attr("placeholder", buyocunt);
+        });
+
+        form.on('input(firstPrice)', function () {
+
+
+        });
+
         // 初始化账号列表
         initMembers(layui, $);
+
+        // 监听
 
         // 监听提交事项
         form.on('submit(demo1)', function (data) {
@@ -241,7 +267,9 @@
         let params = {
             page: 1,
             limit: 100,
-            platform: document.getElementById("platform").value
+            nameAsc: true,
+            platformAsc: true
+            // platform: document.getElementById("platform").value
         };
         // 初始化开多策略下拉框
         $.ajax({url: layui.http.api + '/admin/member/paging',
@@ -250,9 +278,6 @@
                 success: function (data) {
                     // 使用循环遍历，给下拉列表赋值
                     $.each(data.data, function (index, value) {
-
-                        console.log(value)
-
                         // 获取要追加内容的父元素
                         let parentElement = document.getElementById('memberId');
 
@@ -260,7 +285,10 @@
                         let newCheckbox = document.createElement('input');
                         newCheckbox.type = 'checkbox';
                         newCheckbox.name = 'memberId[' + value.id + ']';
-                        newCheckbox.title = value.name;
+                        newCheckbox.title = '(' + value.platform + ')' + value.name;
+                        if (value.name.includes(term === '0' ? "短线" : "长线") || value.name.includes("综合")) {
+                            newCheckbox.checked = true;
+                        }
                         parentElement.appendChild(newCheckbox);
 
                         layui.form.render("checkbox");
@@ -268,6 +296,21 @@
                     // 重新渲染 固定写法
                     layui.form.render("checkbox");
                 }});
+    }
+
+    function divideByNumber(num) {
+        // 将除数转换为偶数
+        num = num % 2 === 0 ? num : num + 1;
+
+        // 将结果保留两位小数
+        let result = (100 / num).toFixed(2);
+
+        // 如果结果不为0且非偶数，将结果减去0.01，以保证结果为偶数且不超过两位小数
+        if (result % 2 !== 0 && result !== 0) {
+            result = (result - 0.01).toFixed(2);
+        }
+
+        return parseFloat(result);
     }
 </script>
 </body>

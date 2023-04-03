@@ -34,6 +34,7 @@
                                 <select id="platform" name="platform" lay-verify="" lay-search="">
                                     <option value=""></option>
                                     <option value="BITGET">BITGET</option>
+                                    <option value="HOTCOIN">HOTCOIN</option>
                                 </select>
                             </div>
                         </div>
@@ -121,8 +122,8 @@
                               {field: 'type', title: '类型', width: 80, templet: function(d){
                                   return d.type === 0 ? '模拟单' : '实盘单';
                               }},
-                              {field: 'platform', title: '平台', width: 80},
-                              {field: 'currency', title: '币种', width: 80},
+                              {field: 'platform', title: '平台', width: 100},
+                              {field: 'currency', title: '币种', width: 100},
                               {field: 'type', title: '方向', width: 80, templet: function(d){
                                   return d.direction === 'long_open' ? '开多' : '开空';
                               }},
@@ -163,9 +164,9 @@
                                     str += '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>';
                                     return str;}}]],
                       page: true,
-                      limit: 10,
+                      limit: 15,
                       where: {term : 1},
-                      limits: [10, 15, 20]});
+                      limits: [15, 20, 30]});
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {

@@ -26,6 +26,7 @@
                                 <select id="platform" name="platform" lay-verify="" lay-search="">
                                     <option value=""></option>
                                     <option value="BITGET">BITGET</option>
+                                    <option value="HOTCOIN">HOTCOIN</option>
                                 </select>
                             </div>
                         </div>
@@ -101,8 +102,8 @@
                                     str += '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>';
                                     return str;}}]],
                       page: true,
-                      limit: 10,
-                      limits: [10, 15, 20]});
+                      limit: 15,
+                      limits: [15, 20, 30]});
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
