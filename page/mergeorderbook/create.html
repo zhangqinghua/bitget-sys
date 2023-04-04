@@ -83,6 +83,7 @@
                 <div class="layui-input-inline">
                     <input type="number" id="firstPrice" name="firstPrice" lay-verify="required|number" autocomplete="off" class="layui-input" value="" placeholder="20100.00">
                 </div>
+                <div class='layui-form-mid layui-word-aux' id="firstPriceTips"></div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">止盈位置</label>
@@ -120,9 +121,11 @@
             <div class="layui-inline">
                 <label class="layui-form-label">补仓位置</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="secondPrice" lay-verify="" autocomplete="off" class="layui-input" value="" placeholder="20050.00">
+                    <input type="number" id = "secondPrice" name="secondPrice" lay-verify="secondPrice" autocomplete="off" class="layui-input" value="" placeholder="20050.00">
                 </div>
+                <div class='layui-form-mid layui-word-aux' id="secondPriceTips"></div>
             </div>
+
             <div class="layui-inline">
                 <label class="layui-form-label">均价止盈</label>
                 <div class="layui-input-inline">
@@ -170,22 +173,29 @@
             document.getElementById("mergeForm").style.display = this.checked ? '' : 'none';
         });
 
-        console.log('监听进场位置输入框的输入事件');
         // 监听进场位置输入框的输入事件
-
         $("#firstPrice").on("input",function(e){
+            let firstPrice = e.delegateTarget.value;
             //获取input输入的值
-            console.log(e.delegateTarget.value);
+            if (firstPrice === '') {
+                document.getElementById("firstPriceTips").innerHTML = '';
+            }else {
+                let num = firstPrice * 0.0015;
+                num = num >= 0.01 ? num.toFixed(2) : num.toFixed(4);
+                document.getElementById("firstPriceTips").innerHTML = '±' + num;
+            }
+        });
 
-            console.log('监听进场位置输入框的输入事件');
-            // 获取当前输入框的值
-            let input = e.delegateTarget.value;
-
-            // 计算购买数量
-            let buyocunt = divideByNumber(input);
-            console.log('input: ' + input);
-            console.log('buyocunt: ' + buyocunt);
-            $('input[name="firstNum"]').attr("placeholder", buyocunt);
+        $("#secondPrice").on("input",function(e){
+            let secondPrice = e.delegateTarget.value;
+            //获取input输入的值
+            if (secondPrice === '') {
+                document.getElementById("secondPriceTips").innerHTML = '';
+            }else {
+                let num = secondPrice * 0.0015;
+                num = num >= 0.01 ? num.toFixed(2) : num.toFixed(4);
+                document.getElementById("secondPriceTips").innerHTML = '±' + num;
+            }
         });
 
         form.on('input(firstPrice)', function () {
